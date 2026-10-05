@@ -1,8 +1,9 @@
 ---
+import { withBase } from "../../lib/paths";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import Icon from "../../components/Icon.astro";
-import { publications } from "../../data/publications";
+import { publications, publicationCoverUrl } from "../../data/publications";
 import { mainNav } from "../../config/navigation";
 import { siteConfig } from "../../config/siteConfig";
 
@@ -15,10 +16,10 @@ const pubCards = [
 ];
 
 const pubLinks: Record<string, string> = {
-  kahayag: "/research/kahayag/",
-  "book-of-abstracts": "/research/book-of-abstracts/",
-  "magazine-2024": "/magazine/magazine-2024/",
-  "watchguild-magazine": "/magazine/watchguild-magazine/",
+  kahayag: withBase("/research/kahayag/"),
+  "book-of-abstracts": withBase("/research/book-of-abstracts/"),
+  "magazine-2024": withBase("/magazine/magazine-2024/"),
+  "watchguild-magazine": withBase("/magazine/watchguild-magazine/"),
 };
 ---
 
@@ -38,7 +39,7 @@ const pubLinks: Record<string, string> = {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {researchMenu.map((item, i) => (
           <a
-            href={item.href}
+            href={withBase(item.href)}
             class="group card-lift rounded-2xl border border-border bg-surface-alt p-6 shadow-card hover:border-primary/30 hover:shadow-card-hover"
           >
             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8 ring-1 ring-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -64,16 +65,16 @@ const pubLinks: Record<string, string> = {
           <p class="eyebrow text-accent">Publications</p>
           <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-text">Read in our flipbook viewer</h2>
         </div>
-        <a href="/magazine/" class="text-sm font-semibold text-primary hover:text-primary-dark">
+        <a href={withBase("/magazine/")} class="text-sm font-semibold text-primary hover:text-primary-dark">
           Magazine previews →
         </a>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {pubCards.map((pub) => (
           <article class="rounded-2xl border border-border bg-surface overflow-hidden shadow-card card-lift flex flex-col sm:flex-row">
-            {pub.coverImage ? (
+            {publicationCoverUrl(pub) ? (
               <img
-                src={pub.coverImage}
+                src={publicationCoverUrl(pub)}
                 alt=""
                 class="sm:w-36 h-44 sm:h-auto object-cover shrink-0"
                 loading="lazy"
@@ -110,7 +111,7 @@ const pubLinks: Record<string, string> = {
         Bonbon Road, Imadejas Subd., Butuan City · researchandextension78@gmail.com · (085) 225-5543
       </p>
       <a
-        href="/research/extension/"
+        href={withBase("/research/extension/")}
         class="mt-6 inline-flex rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-primary hover:bg-white/90 transition-colors"
       >
         Research &amp; Extension hub

@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from "../config/siteConfig";
+import { withBase } from "../lib/paths";
 
 interface Props {
   title?: string;
@@ -23,13 +24,13 @@ const {
       </div>
       <div class="flex flex-col sm:flex-row gap-3 shrink-0">
         <a
-          href="/journalists/"
+          href={withBase("/journalists/")}
           class="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-primary shadow-card hover:bg-white/90 transition-all"
         >
           Meet the Guild
         </a>
         <a
-          href="/contact/"
+          href={withBase("/contact/")}
           class="inline-flex items-center justify-center rounded-xl border-2 border-white/35 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10 transition-colors"
         >
           Contact {siteConfig.businessName}

@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/paths";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import ArticleCard from "../../components/ArticleCard.astro";
@@ -34,10 +35,10 @@ const researchPosts = posts
         </div>
       )}
       <div class="mt-10 flex flex-wrap gap-4">
-        <a href="/research/" class="text-sm font-semibold text-primary hover:text-primary-dark">
+        <a href={withBase("/research/")} class="text-sm font-semibold text-primary hover:text-primary-dark">
           ← Research hub
         </a>
-        <a href="/research/kahayag/" class="text-sm font-semibold text-primary hover:text-primary-dark">
+        <a href={withBase("/research/kahayag/")} class="text-sm font-semibold text-primary hover:text-primary-dark">
           Kahayag Journal flipbook →
         </a>
       </div>

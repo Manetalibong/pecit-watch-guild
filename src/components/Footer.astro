@@ -1,9 +1,12 @@
 ---
 import { siteConfig } from "../config/siteConfig";
 import { footerNav } from "../config/navigation";
+import { withBase } from "../lib/paths";
 
 const year = new Date().getFullYear();
 const { socialLinks, address } = siteConfig;
+const logoSrc = withBase(siteConfig.logo);
+const homeHref = withBase("/");
 ---
 
 <footer class="bg-surface-dark text-gray-300">
@@ -12,9 +15,9 @@ const { socialLinks, address } = siteConfig;
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         <!-- Brand -->
         <div class="lg:col-span-1">
-          <a href="/" class="inline-block mb-4">
+          <a href={homeHref} class="inline-block mb-4">
             <img
-              src={siteConfig.logo}
+              src={logoSrc}
               alt={siteConfig.publicationName}
               class="h-12 w-auto brightness-110"
               width="180"
@@ -52,7 +55,7 @@ const { socialLinks, address } = siteConfig;
           <ul class="space-y-2">
             {footerNav.map((item) => (
               <li>
-                <a href={item.href} class="text-sm hover:text-secondary transition-colors">{item.label}</a>
+                <a href={withBase(item.href)} class="text-sm hover:text-secondary transition-colors">{item.label}</a>
               </li>
             ))}
           </ul>
@@ -91,7 +94,7 @@ const { socialLinks, address } = siteConfig;
             {siteConfig.institution} offers programs in Business Administration, Information Systems, Hospitality and Tourism, and Criminology.
           </p>
           <a
-            href="/about/"
+            href={withBase("/about/")}
             class="inline-flex items-center text-sm font-semibold text-secondary hover:text-secondary-light transition-colors"
           >
             Learn about PECIT

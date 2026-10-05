@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/paths";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { siteConfig } from "../../config/siteConfig";
 import { getCollection, render } from "astro:content";
@@ -39,13 +40,13 @@ const sidebarPosts = allPosts.slice(0, 8);
   <div class="bg-surface border-b border-border">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
       <nav class="text-sm text-text-muted">
-        <a href="/" class="hover:text-primary transition-colors">Home</a>
+        <a href={withBase("/")} class="hover:text-primary transition-colors">Home</a>
         <span class="mx-2">/</span>
-        <a href="/articles/" class="hover:text-primary transition-colors">Articles</a>
+        <a href={withBase("/articles/")} class="hover:text-primary transition-colors">Articles</a>
       </nav>
 
       <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
-        <!-- Main column — CSU press release style -->
+        <!-- Main column â€” CSU press release style -->
         <article class="lg:col-span-8 min-w-0">
           <h1 class="text-2xl sm:text-3xl lg:text-[2rem] font-bold text-primary leading-snug">
             {title}
@@ -61,7 +62,7 @@ const sidebarPosts = allPosts.slice(0, 8);
                 <span class="inline-flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <a
-                      href={`/articles/?category=${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, "-"))}`}
+                      href={withBase(`/articles/?category=${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, "-"))}`)}
                       class="font-semibold uppercase tracking-wide text-[0.7rem] text-accent hover:text-primary transition-colors"
                     >
                       {tag}
@@ -75,7 +76,7 @@ const sidebarPosts = allPosts.slice(0, 8);
           {image && (
             <figure class="mt-8">
               <img
-                src={image}
+                src={image ? withBase(image) : image}
                 alt=""
                 class="w-full rounded-lg border border-border object-cover max-h-[480px]"
                 loading="eager"
@@ -97,7 +98,7 @@ const sidebarPosts = allPosts.slice(0, 8);
 
           <div class="mt-12 pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4">
             <a
-              href="/articles/"
+              href={withBase("/articles/")}
               class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
             >
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -106,12 +107,12 @@ const sidebarPosts = allPosts.slice(0, 8);
               Back to Articles
             </a>
             <p class="text-xs text-text-muted">
-              {siteConfig.publicationName} · {siteConfig.institutionShort}
+              {siteConfig.publicationName} Â· {siteConfig.institutionShort}
             </p>
           </div>
         </article>
 
-        <!-- Sidebar — Press Releases (CSU-style) -->
+        <!-- Sidebar â€” Press Releases (CSU-style) -->
         <aside class="lg:col-span-4">
           <div class="lg:sticky lg:top-24 rounded-xl border border-border bg-surface-alt overflow-hidden shadow-card">
             <div class="bg-primary px-5 py-4">
@@ -122,7 +123,7 @@ const sidebarPosts = allPosts.slice(0, 8);
               {sidebarPosts.map((item) => (
                 <li>
                   <a
-                    href={`/articles/${item.id}/`}
+                    href={withBase(`/articles/${item.id}/`)}
                     class:list={[
                       "block px-5 py-4 hover:bg-primary/[0.04] transition-colors group",
                       item.id === post.id && "bg-primary/[0.06]",
@@ -147,10 +148,10 @@ const sidebarPosts = allPosts.slice(0, 8);
             </ul>
             <div class="border-t border-border px-5 py-3 bg-surface">
               <a
-                href="/articles/"
+                href={withBase("/articles/")}
                 class="text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
               >
-                View all articles →
+                View all articles â†’
               </a>
             </div>
           </div>
@@ -161,7 +162,7 @@ const sidebarPosts = allPosts.slice(0, 8);
               Write for campus. Report with integrity. Be part of PECIT's official publication.
             </p>
             <a
-              href="/contact/"
+              href={withBase("/contact/")}
               class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors"
             >
               Contact us

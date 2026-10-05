@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/paths";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { publications } from "../../data/publications";
 import { siteConfig } from "../../config/siteConfig";
@@ -23,7 +24,7 @@ const magazines = [publications["magazine-2024"], publications["watchguild-magaz
             <h2 class="text-xl font-bold text-primary">{pub.title}</h2>
             {pub.subtitle && <p class="mt-1 text-sm text-text-muted">{pub.subtitle}</p>}
             <a
-              href={`/magazine/${pub.id}/`}
+              href={withBase(`/magazine/${pub.id}/`)}
               class="mt-5 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark transition-colors"
             >
               Open flipbook

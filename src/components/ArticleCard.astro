@@ -1,6 +1,7 @@
 ---
 import type { Article } from "../types/article";
 import { formatArticleDate, getPrimaryCategory } from "../lib/articles";
+import { withBase } from "../lib/paths";
 
 interface Props {
   article: Article;
@@ -9,16 +10,17 @@ interface Props {
 
 const { article, variant = "default" } = Astro.props;
 const category = getPrimaryCategory(article);
-const href = `/articles/${article.slug}/`;
+const href = withBase(`/articles/${article.slug}/`);
+const imageSrc = article.image ? withBase(article.image) : undefined;
 ---
 
 {variant === "featured" && (
   <article class="group relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl">
     <a href={href} class="block">
       <div class="relative aspect-[16/10] overflow-hidden">
-        {article.image ? (
+        {imageSrc ? (
           <img
-            src={article.image}
+            src={imageSrc}
             alt={article.title}
             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
@@ -47,9 +49,9 @@ const href = `/articles/${article.slug}/`;
 {variant === "horizontal" && (
   <article class="group flex gap-4 sm:gap-6 border-b border-border pb-6 last:border-0 last:pb-0">
     <a href={href} class="shrink-0 w-28 sm:w-36 aspect-[4/3] overflow-hidden rounded-xl bg-surface-alt shadow-card">
-      {article.image ? (
+      {imageSrc ? (
         <img
-          src={article.image}
+          src={imageSrc}
           alt={article.title}
           class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
@@ -79,9 +81,9 @@ const href = `/articles/${article.slug}/`;
   <article class="group">
     <a href={href} class="block">
       <div class="aspect-[16/10] overflow-hidden rounded-lg mb-3">
-        {article.image ? (
+        {imageSrc ? (
           <img
-            src={article.image}
+            src={imageSrc}
             alt={article.title}
             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
@@ -105,9 +107,9 @@ const href = `/articles/${article.slug}/`;
   <article class="group card-lift flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-card hover:shadow-card-hover hover:border-primary/25">
     <a href={href} class="block">
       <div class="aspect-[16/10] overflow-hidden bg-surface-alt">
-        {article.image ? (
+        {imageSrc ? (
           <img
-            src={article.image}
+            src={imageSrc}
             alt={article.title}
             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"

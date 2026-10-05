@@ -1,3 +1,5 @@
+import { withBase } from "../lib/paths";
+
 export interface HeroBanner {
   id: string;
   image: string;
@@ -9,14 +11,14 @@ export interface HeroBanner {
 export const heroBanners: HeroBanner[] = [
   {
     id: "watchguild",
-    image: "/images/banner-watchguild.jpg",
+    image: withBase("/images/banner-watchguild.jpg"),
     alt: "The Watch Guild — Official Student Publication of PECIT",
-    href: "/about/",
+    href: withBase("/about/"),
   },
   {
     id: "pecit",
-    image: "/images/banner-pecit.jpg",
+    image: withBase("/images/banner-pecit.jpg"),
     alt: "PECIT — Where Science and Technology is at its Best",
-    href: "/about/",
+    href: withBase("/about/"),
   },
 ];

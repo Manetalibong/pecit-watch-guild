@@ -12,6 +12,7 @@ import {
   getResearchArticles,
 } from "../lib/articles";
 import { mainNav } from "../config/navigation";
+import { withBase } from "../lib/paths";
 
 const featured = getFeaturedArticles();
 const latest = getLatestArticles(6);
@@ -54,7 +55,7 @@ const metaDescription =
             <nav class="divide-y divide-white/10">
               {quickLinks.map((link) => (
                 <a
-                  href={link.href}
+                  href={withBase(link.href)}
                   class="flex items-center gap-3.5 px-5 py-3.5 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white transition-colors group"
                 >
                   <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/12 ring-1 ring-white/20 text-white group-hover:bg-white group-hover:text-primary transition-colors">
@@ -76,7 +77,7 @@ const metaDescription =
               <p class="eyebrow text-accent">Newsroom</p>
               <h2 class="mt-1.5 text-2xl sm:text-3xl font-bold text-text">Press Releases</h2>
             </div>
-            <a href="/articles/" class="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
+            <a href={withBase("/articles/")} class="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
               More articles
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -88,7 +89,7 @@ const metaDescription =
               <ArticleCard article={article} variant="horizontal" />
             ))}
           </div>
-          <a href="/articles/" class="sm:hidden mt-6 inline-flex items-center text-sm font-semibold text-primary">
+          <a href={withBase("/articles/")} class="sm:hidden mt-6 inline-flex items-center text-sm font-semibold text-primary">
             View all articles →
           </a>
         </div>
@@ -107,7 +108,7 @@ const metaDescription =
             Explore journals, abstracts, and student research from PECIT Research and Extension.
           </p>
         </div>
-        <a href="/research/" class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
+        <a href={withBase("/research/")} class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
           Open Research hub
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -117,7 +118,7 @@ const metaDescription =
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {researchMenu.map((item, i) => (
           <a
-            href={item.href}
+            href={withBase(item.href)}
             class="group card-lift rounded-2xl border border-border bg-surface p-6 shadow-card hover:shadow-card-hover hover:border-primary/30"
           >
             <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8 ring-1 ring-primary/15 text-primary group-hover:bg-primary group-hover:text-white group-hover:ring-primary transition-colors">
@@ -215,7 +216,7 @@ const metaDescription =
             ))}
           </ul>
           <a
-            href="/about/"
+            href={withBase("/about/")}
             class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-white shadow-card hover:bg-primary-dark hover:shadow-card-hover transition-all"
           >
             Read More
@@ -226,7 +227,7 @@ const metaDescription =
         </div>
         <div class="relative">
           <img
-            src="/images/team-photo.jpg"
+            src={withBase("/images/team-photo.jpg")}
             alt="The Watch Guild editorial board members together at the PECIT publication office"
             class="rounded-2xl shadow-panel w-full aspect-[4/3] object-cover object-top"
             loading="lazy"
@@ -257,7 +258,7 @@ const metaDescription =
           <div class="group text-center">
             <div class="mx-auto w-40 h-40 sm:w-48 sm:h-48 overflow-hidden rounded-full ring-4 ring-primary/10 group-hover:ring-primary/30 shadow-card group-hover:shadow-card-hover transition-all">
               <img
-                src={member.image}
+                src={withBase(member.image)}
                 alt={member.name}
                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
@@ -269,7 +270,7 @@ const metaDescription =
         ))}
       </div>
       <div class="text-center mt-10">
-        <a href="/journalists/" class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors">
+        <a href={withBase("/journalists/")} class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors">
           View all members
           <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -293,7 +294,7 @@ const metaDescription =
           <div class="mt-6 space-y-4">
             {research.slice(0, 3).map((article) => (
               <a
-                href={`/articles/${article.slug}/`}
+                href={withBase(`/articles/${article.slug}/`)}
                 class="block rounded-xl border border-white/15 bg-white/[0.06] p-5 hover:bg-white/[0.12] hover:border-white/25 transition-colors group"
               >
                 <span class="eyebrow text-white/60">Research</span>
@@ -304,7 +305,7 @@ const metaDescription =
               </a>
             ))}
           </div>
-          <a href="/research/" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-white hover:text-white/80 transition-colors">
+          <a href={withBase("/research/")} class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-white hover:text-white/80 transition-colors">
             Browse all research
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -316,7 +317,7 @@ const metaDescription =
         <div class="rounded-2xl bg-white/[0.06] border border-white/15 p-6 sm:p-8 shadow-panel">
           <div class="flex flex-col sm:flex-row gap-6 items-start">
             <img
-              src="/images/journal-cover.png"
+              src={withBase("/images/journal-cover.png")}
               alt="Kahayag Multidisciplinary Research Journal cover"
               class="w-32 sm:w-40 shrink-0 rounded-xl shadow-panel ring-1 ring-white/10"
               loading="lazy"
@@ -331,7 +332,7 @@ const metaDescription =
                 Copyright November 2025 · PECIT, Butuan City
               </p>
               <a
-                href="/research/kahayag/"
+                href={withBase("/research/kahayag/")}
                 class="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary shadow-card hover:bg-white/90 hover:shadow-card-hover transition-all"
               >
                 <Icon name="book" class="h-4 w-4" />
@@ -358,7 +359,7 @@ const metaDescription =
               Your essential guide to academic policies, campus rules, and student responsibilities. Navigate your educational journey with confidence.
             </p>
             <a
-              href="/handbook/"
+              href={withBase("/handbook/")}
               class="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-primary shadow-card hover:bg-white/90 hover:shadow-card-hover transition-all"
             >
               <Icon name="handbook" class="h-4 w-4" />
@@ -389,14 +390,14 @@ const metaDescription =
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <a
-          href="/contact/"
+          href={withBase("/contact/")}
           class="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-sm font-bold text-white shadow-card hover:bg-primary-dark hover:shadow-card-hover transition-all"
         >
           <Icon name="pen-tool" class="h-4 w-4" />
           Be Part of Our Growing Family
         </a>
         <a
-          href="/journalists/"
+          href={withBase("/journalists/")}
           class="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-surface px-8 py-4 text-sm font-bold text-text hover:border-primary hover:text-primary transition-colors"
         >
           Meet Our Journalists

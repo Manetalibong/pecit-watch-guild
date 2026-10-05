@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/paths";
 import PdfFlipbookViewer from "./PdfFlipbookViewer.astro";
 import type { Publication } from "../data/publications";
 import { publicationPdfUrl } from "../data/publications";
@@ -18,6 +19,6 @@ const pdfSrc = publicationPdfUrl(pub);
   remoteUrl={pub.remoteUrl}
   title={pub.title}
   subtitle={pub.subtitle}
-  backHref={backHref}
+  backHref={withBase(backHref)}
   backLabel={backLabel}
 />

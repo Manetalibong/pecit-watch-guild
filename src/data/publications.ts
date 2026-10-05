@@ -1,3 +1,5 @@
+import { withBase } from "../lib/paths";
+
 export type Publication = {
   id: string;
   title: string;
@@ -59,5 +61,9 @@ export function getPublication(id: string): Publication | undefined {
 }
 
 export function publicationPdfUrl(pub: Publication): string {
-  return pub.localPath;
+  return withBase(pub.localPath);
+}
+
+export function publicationCoverUrl(pub: Publication): string | undefined {
+  return pub.coverImage ? withBase(pub.coverImage) : undefined;
 }
