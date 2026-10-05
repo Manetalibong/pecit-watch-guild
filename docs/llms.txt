@@ -1,0 +1,19 @@
+# The Watch Guild
+
+> Official Student Publication of PECIT. Professional home services in Butuan City, Philippines.
+
+Contact: (085) 225-5543 | Watchguildpecit12@gmail.com
+Site: https://pecitwatchguild.com/
+
+## Main pages
+
+- [Home](https://pecitwatchguild.com/)
+- [Services](https://pecitwatchguild.com/services/)
+- [Service Areas](https://pecitwatchguild.com/service-areas/)
+- [About](https://pecitwatchguild.com/about/)
+- [Contact](https://pecitwatchguild.com/contact/)
+- [Blog](https://pecitwatchguild.com/blog/)
+
+## Optional
+
+- [Sitemap](https://pecitwatchguild.com/sitemap-index.xml)
