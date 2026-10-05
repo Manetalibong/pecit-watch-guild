@@ -6,3 +6,8 @@ Thumbs.db
 *.log
 .env
 .env.*
+
+# Oversized publication PDFs (GitHub soft limit ~50MB). Fetch with: npm run fetch:pdfs
+# Flipbook falls back to pecitwatchguild.com remote URLs when local files are missing.
+public/publications/magazine-2024.pdf
+public/publications/the-watchguild-magazine.pdf

@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PublicationReader from "../../components/PublicationReader.astro";
+import { getPublication } from "../../data/publications";
+import { siteConfig } from "../../config/siteConfig";
+
+export function getStaticPaths() {
+  return [{ params: { slug: "magazine-2024" } }, { params: { slug: "watchguild-magazine" } }];
+}
+
+const { slug } = Astro.params;
+const pub = getPublication(slug!);
+if (!pub) return Astro.redirect("/magazine/");
+---
+
+<BaseLayout
+  title={`${pub.title} | ${siteConfig.businessName}`}
+  description={pub.subtitle ?? pub.title}
+  schema="Organization"
+>
+  <PublicationReader pub={pub} />
+</BaseLayout>

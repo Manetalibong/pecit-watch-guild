@@ -6,7 +6,7 @@
 import { siteConfig } from "../config/siteConfig";
 
 interface Props {
-  type?: "LocalBusiness" | "Service" | "Article";
+  type?: "LocalBusiness" | "Organization" | "Service" | "Article";
   pageTitle?: string;
   pageDescription?: string;
   serviceName?: string;
@@ -53,10 +53,13 @@ const sameAs = [
   socialLinks.instagram,
   socialLinks.youtube,
   socialLinks.google,
+  (socialLinks as Record<string, string>).twitter,
 ].filter(Boolean);
 
-const localBusiness: Record<string, unknown> = {
-  "@type": "LocalBusiness",
+const orgType = type === "Organization" ? "NewsMediaOrganization" : "LocalBusiness";
+
+const organization: Record<string, unknown> = {
+  "@type": orgType,
   "@id": businessId,
   name: businessName,
   description: tagline,
@@ -71,12 +74,12 @@ const localBusiness: Record<string, unknown> = {
     addressLocality: address.city,
     addressRegion: address.state,
     postalCode: address.zip,
-    addressCountry: "US",
+    addressCountry: "PH",
   },
   areaServed: serviceArea,
 };
 
-if (sameAs.length) localBusiness.sameAs = sameAs;
+if (sameAs.length) organization.sameAs = sameAs;
 
 const website = {
   "@type": "WebSite",
@@ -126,7 +129,7 @@ const breadcrumb = {
   itemListElement: breadcrumbItems,
 };
 
-const graph: Record<string, unknown>[] = [website, localBusiness, webPage, breadcrumb];
+const graph: Record<string, unknown>[] = [website, organization, webPage, breadcrumb];
 
 if (type === "Service" && serviceName) {
   const serviceId = `${pageId}#service`;

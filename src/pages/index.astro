@@ -1,125 +1,276 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
-import ServiceCard from "../components/ServiceCard.astro";
-import AreaCard from "../components/AreaCard.astro";
-import CTABanner from "../components/CTABanner.astro";
+import HeroCarousel from "../components/HeroCarousel.astro";
+import ArticleCard from "../components/ArticleCard.astro";
+import Icon from "../components/Icon.astro";
 import { siteConfig } from "../config/siteConfig";
-import { getCollection } from "astro:content";
+import { quickLinks } from "../config/navigation";
+import { editorialPillars, teamMembers } from "../data/homepage";
+import {
+  getFeaturedArticles,
+  getLatestArticles,
+  getResearchArticles,
+} from "../lib/articles";
+import { mainNav } from "../config/navigation";
 
-const services = (await getCollection("services")).sort(
-  (a, b) => a.data.order - b.data.order,
-);
-const serviceAreas = await getCollection("serviceAreas");
+const featured = getFeaturedArticles();
+const latest = getLatestArticles(6);
+const research = getResearchArticles();
+const spotlight = featured.slice(0, 3);
+const researchMenu = mainNav.find((item) => item.label === "Research")?.children ?? [];
+
+const quickLinkIcons: Record<string, string> = {
+  newspaper: "newspaper",
+  book: "book",
+  handbook: "handbook",
+  users: "users",
+  journal: "journal",
+  mail: "mail",
+};
+
+const metaDescription =
+  "The Watch Guild is the official student publication of PECIT. Read campus news, feature articles, columns, editorials, and research from student journalists in Butuan City.";
 ---
 
-<BaseLayout>
-  <Hero
-    title={`Trusted ${siteConfig.tagline.split(" ").slice(-1)[0]} in ${siteConfig.serviceArea}`}
-    subtitle={`${siteConfig.businessName} delivers reliable, professional service you can count on. Serving ${siteConfig.serviceArea} and surrounding areas.`}
-  />
+<BaseLayout
+  title={`${siteConfig.publicationName} | ${siteConfig.tagline}`}
+  description={metaDescription}
+  schema="Organization"
+>
+  <!-- Hero: only Watch Guild + PECIT banners -->
+  <HeroCarousel />
 
-  <!-- Services Section -->
-  <section class="py-16 sm:py-20 bg-surface">
+  <!-- CSU-style Explore + Press Releases -->
+  <section class="py-10 sm:py-14 bg-surface-alt border-b border-border">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-text">Our Services</h2>
-        <p class="mt-4 text-lg text-text-muted">
-          From routine maintenance to emergency repairs, we offer a full range of professional services.
-        </p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map((service) => (
-          <ServiceCard
-            title={service.data.title}
-            description={service.data.description}
-            slug={service.id}
-            icon={service.data.icon}
-            image={service.data.image}
-          />
-        ))}
-      </div>
-      <div class="text-center mt-10">
-        <a
-          href="/services"
-          class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors"
-        >
-          View all services
-          <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        <div class="lg:col-span-4">
+          <p class="eyebrow text-primary mb-3">Explore</p>
+          <div class="rounded-2xl bg-primary text-white overflow-hidden shadow-panel">
+            <div class="px-5 py-4 border-b border-white/15 bg-white/[0.06]">
+              <p class="text-[0.7rem] uppercase tracking-[0.14em] text-white/65">Quick Links</p>
+              <p class="text-lg font-bold mt-1">My Watch Guild</p>
+            </div>
+            <nav class="divide-y divide-white/10">
+              {quickLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class="flex items-center gap-3.5 px-5 py-3.5 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white transition-colors group"
+                >
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/12 ring-1 ring-white/20 text-white group-hover:bg-white group-hover:text-primary transition-colors">
+                    <Icon name={quickLinkIcons[link.icon] ?? "arrow-right"} class="h-[1.05rem] w-[1.05rem]" />
+                  </span>
+                  {link.label}
+                  <svg class="ml-auto h-4 w-4 text-white/45 group-hover:text-white group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8">
+          <div class="flex items-end justify-between mb-6 pb-4 border-b-2 border-primary/15">
+            <div>
+              <p class="eyebrow text-accent">Newsroom</p>
+              <h2 class="mt-1.5 text-2xl sm:text-3xl font-bold text-text">Press Releases</h2>
+            </div>
+            <a href="/articles/" class="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
+              More articles
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+          <div class="space-y-6">
+            {latest.slice(0, 4).map((article) => (
+              <ArticleCard article={article} variant="horizontal" />
+            ))}
+          </div>
+          <a href="/articles/" class="sm:hidden mt-6 inline-flex items-center text-sm font-semibold text-primary">
+            View all articles →
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Why Choose Us -->
+  <!-- CSU-style Research menu cards -->
+  <section class="py-14 sm:py-16 bg-surface border-b border-border">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+        <div>
+          <p class="eyebrow text-accent">Research</p>
+          <h2 class="mt-1.5 text-2xl sm:text-3xl font-bold text-text">Scholarly Works</h2>
+          <p class="mt-2 text-text-muted max-w-2xl">
+            Explore journals, abstracts, and student research from PECIT Research and Extension.
+          </p>
+        </div>
+        <a href="/research/" class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark transition-colors">
+          Open Research hub
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {researchMenu.map((item, i) => (
+          <a
+            href={item.href}
+            class="group card-lift rounded-2xl border border-border bg-surface p-6 shadow-card hover:shadow-card-hover hover:border-primary/30"
+          >
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8 ring-1 ring-primary/15 text-primary group-hover:bg-primary group-hover:text-white group-hover:ring-primary transition-colors">
+              <Icon
+                name={["book", "journal", "clipboard", "graduation-cap", "users"][i] ?? "book"}
+                class="h-5 w-5"
+              />
+            </span>
+            <h3 class="mt-4 text-base font-bold text-text group-hover:text-primary transition-colors">{item.label}</h3>
+            {item.description && (
+              <p class="mt-2 text-sm text-text-muted leading-relaxed">{item.description}</p>
+            )}
+            <span class="mt-4 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-primary">
+              View
+              <svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Spotlight Stories (Featured grid like current site) -->
+  <section class="py-16 sm:py-20 bg-surface">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <p class="eyebrow text-accent">Spotlight</p>
+        <h2 class="mt-1.5 text-3xl sm:text-4xl font-bold text-text">
+          Featured Articles of the Week
+        </h2>
+        <p class="mt-4 text-lg text-text-muted">
+          Thought-provoking stories, standout achievements, and creative masterpieces from The Watch Guild team.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {spotlight.map((article) => (
+          <ArticleCard article={article} variant="default" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Pillars -->
+  <section class="py-16 sm:py-20 bg-primary relative overflow-hidden pattern-grid">
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <p class="eyebrow text-white/65">Our Promise</p>
+        <h2 class="mt-1.5 text-3xl sm:text-4xl font-bold text-white">
+          {siteConfig.motto}
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {editorialPillars.map((pillar) => (
+          <div class="rounded-2xl bg-white/[0.08] backdrop-blur border border-white/15 p-7 sm:p-8 text-center shadow-panel">
+            <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25">
+              <Icon name={pillar.icon} class="h-7 w-7 text-white" />
+            </div>
+            <h3 class="text-xl font-bold text-white">{pillar.title}</h3>
+            <p class="mt-3 text-sm text-white/75 leading-relaxed">{pillar.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- About the Guild (UPD/DLSU about section style) -->
   <section class="py-16 sm:py-20 bg-surface-alt">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-text">Why Choose {siteConfig.businessName}?</h2>
-        <p class="mt-4 text-lg text-text-muted">
-          We're committed to providing the highest quality service at competitive prices.
-        </p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center p-6">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-            <svg class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div>
+          <p class="eyebrow text-accent">About Us</p>
+          <h2 class="mt-1.5 text-3xl sm:text-4xl font-bold text-text">
+            Welcome to The Watch Guild
+          </h2>
+          <p class="mt-4 text-lg text-text-muted leading-relaxed">
+            At <strong class="text-text">The Watch Guild</strong>, we are more than just a school publication. We are a collective of passionate student writers, editors, and creatives dedicated to informing, inspiring, and engaging our community.
+          </p>
+          <p class="mt-4 text-text-muted leading-relaxed">
+            {siteConfig.mission}
+          </p>
+          <ul class="mt-6 space-y-3">
+            {[
+              "Keep our community updated on the latest events and happenings.",
+              "Share perspectives that ignite imagination and dialogue.",
+              "Foster a sense of unity and pride within our school.",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-text-muted">
+                <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 mt-0.5">
+                  <Icon name="check" class="h-3 w-3 text-primary" strokeWidth={3} />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a
+            href="/about/"
+            class="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-bold text-white shadow-card hover:bg-primary-dark hover:shadow-card-hover transition-all"
+          >
+            Read More
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-text">Licensed & Insured</h3>
-          <p class="mt-2 text-text-muted">Fully licensed, bonded, and insured for your peace of mind.</p>
+          </a>
         </div>
-        <div class="text-center p-6">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-            <svg class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div class="relative">
+          <img
+            src="/images/team-photo.jpg"
+            alt="The Watch Guild editorial board members together at the PECIT publication office"
+            class="rounded-2xl shadow-panel w-full aspect-[4/3] object-cover object-top"
+            loading="lazy"
+          />
+          <div class="absolute bottom-0 left-0 right-0 rounded-b-2xl bg-gradient-to-t from-surface-dark via-surface-dark/80 to-transparent px-6 pt-10 pb-5">
+            <p class="text-sm font-bold text-white">The Watch Guild Editorial Board</p>
+            <p class="text-xs text-white/75 mt-1">Official student publication of PECIT, Butuan City</p>
           </div>
-          <h3 class="text-lg font-semibold text-text">Fast Response</h3>
-          <p class="mt-2 text-text-muted">Same-day service available. We know emergencies don't wait.</p>
-        </div>
-        <div class="text-center p-6">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-            <svg class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-text">Upfront Pricing</h3>
-          <p class="mt-2 text-text-muted">No hidden fees. We provide clear estimates before any work begins.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Service Areas -->
+  <!-- Meet the Guild -->
   <section class="py-16 sm:py-20 bg-surface">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-text">Areas We Serve</h2>
+        <p class="eyebrow text-accent">Editorial Board</p>
+        <h2 class="mt-1.5 text-3xl sm:text-4xl font-bold text-text">
+          Meet the Guild
+        </h2>
         <p class="mt-4 text-lg text-text-muted">
-          Proudly serving communities across {siteConfig.serviceArea} and the surrounding metro area.
+          The minds behind the words that capture the essence of our school community.
         </p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {serviceAreas.map((area) => (
-          <AreaCard
-            city={area.data.city}
-            state={area.data.state}
-            slug={area.id}
-            description={area.data.description}
-            image={area.data.image}
-          />
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        {teamMembers.map((member) => (
+          <div class="group text-center">
+            <div class="mx-auto w-40 h-40 sm:w-48 sm:h-48 overflow-hidden rounded-full ring-4 ring-primary/10 group-hover:ring-primary/30 shadow-card group-hover:shadow-card-hover transition-all">
+              <img
+                src={member.image}
+                alt={member.name}
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+            <h3 class="mt-5 text-lg font-bold text-text">{member.name}</h3>
+            <p class="mt-0.5 text-sm font-semibold text-accent">{member.role}</p>
+          </div>
         ))}
       </div>
       <div class="text-center mt-10">
-        <a
-          href="/service-areas"
-          class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors"
-        >
-          View all service areas
+        <a href="/journalists/" class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors">
+          View all members
           <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -128,5 +279,129 @@ const serviceAreas = await getCollection("serviceAreas");
     </div>
   </section>
 
-  <CTABanner />
+  <!-- Research + Kahayag Journal -->
+  <section class="py-16 sm:py-20 bg-surface-dark text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+        <!-- Research Studies -->
+        <div>
+          <p class="eyebrow text-white/65">Scholarly Works</p>
+          <h2 class="mt-1.5 text-2xl sm:text-3xl font-bold">Research Studies</h2>
+          <p class="mt-3 text-white/70 text-sm">
+            Graduating student research from PECIT's Research and Extension Department.
+          </p>
+          <div class="mt-6 space-y-4">
+            {research.slice(0, 3).map((article) => (
+              <a
+                href={`/articles/${article.slug}/`}
+                class="block rounded-xl border border-white/15 bg-white/[0.06] p-5 hover:bg-white/[0.12] hover:border-white/25 transition-colors group"
+              >
+                <span class="eyebrow text-white/60">Research</span>
+                <h3 class="mt-1.5 text-sm font-bold leading-snug text-white line-clamp-2">
+                  {article.title}
+                </h3>
+                <p class="mt-1.5 text-xs text-white/60 line-clamp-2">{article.excerpt}</p>
+              </a>
+            ))}
+          </div>
+          <a href="/research/" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-white hover:text-white/80 transition-colors">
+            Browse all research
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Kahayag Journal -->
+        <div class="rounded-2xl bg-white/[0.06] border border-white/15 p-6 sm:p-8 shadow-panel">
+          <div class="flex flex-col sm:flex-row gap-6 items-start">
+            <img
+              src="/images/journal-cover.png"
+              alt="Kahayag Multidisciplinary Research Journal cover"
+              class="w-32 sm:w-40 shrink-0 rounded-xl shadow-panel ring-1 ring-white/10"
+              loading="lazy"
+            />
+            <div>
+              <p class="eyebrow text-white/65">Biannual Publication</p>
+              <h3 class="mt-1.5 text-xl font-bold">Kahayag Multidisciplinary Research Journal</h3>
+              <p class="mt-3 text-sm text-white/70 leading-relaxed">
+                Research studies presented at the Research and Extension Department, a biannual research presentation of graduating students from CBM, CTHM, and CTE.
+              </p>
+              <p class="mt-3 text-xs text-white/50">
+                Copyright November 2025 · PECIT, Butuan City
+              </p>
+              <a
+                href="/research/kahayag/"
+                class="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary shadow-card hover:bg-white/90 hover:shadow-card-hover transition-all"
+              >
+                <Icon name="book" class="h-4 w-4" />
+                Read PDF
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Student Handbook CTA -->
+  <section class="py-16 sm:py-20 bg-surface-alt">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-3xl overflow-hidden bg-primary relative pattern-grid shadow-panel">
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8 sm:p-12 lg:p-16">
+          <div>
+            <p class="eyebrow text-white/65">Resources</p>
+            <h2 class="mt-1.5 text-2xl sm:text-3xl font-bold text-white">
+              Student Handbook: Your Guide to Success at PECIT
+            </h2>
+            <p class="mt-4 text-white/75 leading-relaxed">
+              Your essential guide to academic policies, campus rules, and student responsibilities. Navigate your educational journey with confidence.
+            </p>
+            <a
+              href="/handbook/"
+              class="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-primary shadow-card hover:bg-white/90 hover:shadow-card-hover transition-all"
+            >
+              <Icon name="handbook" class="h-4 w-4" />
+              Read Handbook
+            </a>
+          </div>
+          <div class="hidden lg:flex justify-end">
+            <div class="grid grid-cols-2 gap-3 max-w-sm">
+              {latest.slice(0, 4).map((article) => (
+                <ArticleCard article={article} variant="compact" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join the Guild CTA -->
+  <section class="py-16 sm:py-20 bg-surface">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="eyebrow text-accent">Recruitment</p>
+      <h2 class="mt-1.5 text-3xl sm:text-4xl font-bold text-text max-w-2xl mx-auto">
+        Become Part of The Watch Guild Team
+      </h2>
+      <p class="mt-4 text-lg text-text-muted max-w-2xl mx-auto">
+        Passionate about storytelling, creative writing, or bringing ideas to life? Whether you are an aspiring journalist, photographer, graphic designer, or someone with a fresh perspective, we want you on our team.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a
+          href="/contact/"
+          class="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-sm font-bold text-white shadow-card hover:bg-primary-dark hover:shadow-card-hover transition-all"
+        >
+          <Icon name="pen-tool" class="h-4 w-4" />
+          Be Part of Our Growing Family
+        </a>
+        <a
+          href="/journalists/"
+          class="inline-flex items-center gap-2 rounded-xl border-2 border-border bg-surface px-8 py-4 text-sm font-bold text-text hover:border-primary hover:text-primary transition-colors"
+        >
+          Meet Our Journalists
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -1,96 +1,135 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CTABanner from "../components/CTABanner.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import JoinGuildCTA from "../components/JoinGuildCTA.astro";
 import { siteConfig } from "../config/siteConfig";
+import { editorialPillars } from "../data/homepage";
+
+const programs = [
+  "Business Administration",
+  "Information Systems",
+  "Hospitality and Tourism",
+  "Criminology",
+];
 ---
 
 <BaseLayout
-  title={`About Us | ${siteConfig.businessName}`}
-  description={`Learn about ${siteConfig.businessName}, a trusted service provider in ${siteConfig.serviceArea}. Dedicated to quality workmanship and customer satisfaction.`}
+  title={`About Us | ${siteConfig.publicationName}`}
+  description={`${siteConfig.mission} Learn about ${siteConfig.publicationName} and ${siteConfig.institutionShort}.`}
+  schema="Organization"
 >
-  <!-- Page Header -->
-  <section class="bg-primary py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <h1 class="text-4xl sm:text-5xl font-bold text-white">About Us</h1>
-      <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
-        Get to know the team behind {siteConfig.businessName}.
-      </p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="About Us"
+    title="Welcome to The Watch Guild Publication"
+    description={`The official student publication of ${siteConfig.institution}. We inform, inspire, and engage the PECIT community through student journalism.`}
+  />
 
-  <!-- Story -->
   <section class="py-16 sm:py-20 bg-surface">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
-          <h2 class="text-3xl sm:text-4xl font-bold text-text">Our Story</h2>
-          <p class="mt-6 text-text-muted leading-relaxed">
-            {siteConfig.businessName} was founded with a simple mission: to provide honest,
-            reliable service to homeowners in {siteConfig.serviceArea}. What started as a
-            small operation has grown into one of the area's most trusted service providers.
-          </p>
+          <p class="eyebrow text-accent">Our story</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-text">More than a school paper</h2>
           <p class="mt-4 text-text-muted leading-relaxed">
-            We believe in doing the job right the first time, treating every customer's home
-            like our own, and providing transparent pricing with no hidden surprises. Our team
-            of licensed professionals brings years of experience and a commitment to excellence
-            to every job.
+            At <strong class="text-text font-semibold">The Watch Guild</strong>, we are a collective of student writers,
+            editors, photographers, and creatives. Every article we publish reflects the curiosity, talent, and dedication
+            of our team — from breaking campus news to research features and opinion columns.
           </p>
+          <p class="mt-4 text-text-muted leading-relaxed">{siteConfig.mission}</p>
+          <ul class="mt-8 space-y-3">
+            {[
+              "Keep our community updated on events and campus life.",
+              "Share perspectives that spark dialogue and critical thinking.",
+              "Uphold press freedom and truthful reporting on campus.",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-text-muted">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 mt-0.5">
+                  <Icon name="check" class="h-3.5 w-3.5 text-primary" strokeWidth={3} />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
         <div class="relative">
           <img
-            src="/images/about-team.jpg"
-            alt={`${siteConfig.businessName} team`}
-            class="rounded-xl shadow-lg w-full aspect-[4/3] object-cover"
-            loading="lazy"
+            src="/images/team-photo.jpg"
+            alt="The Watch Guild editorial board at PECIT"
+            class="rounded-2xl shadow-panel w-full aspect-[4/3] object-cover object-top ring-1 ring-border"
+            loading="eager"
           />
+          <div class="absolute bottom-0 left-0 right-0 rounded-b-2xl bg-gradient-to-t from-surface-dark via-surface-dark/85 to-transparent px-6 pt-12 pb-5">
+            <p class="text-sm font-bold text-white">The Watch Guild Editorial Board</p>
+            <p class="text-xs text-white/75 mt-1">{siteConfig.tagline}</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Values -->
-  <section class="py-16 sm:py-20 bg-surface-alt">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <section class="py-16 sm:py-20 bg-primary relative overflow-hidden pattern-grid">
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-text">Our Values</h2>
-        <p class="mt-4 text-lg text-text-muted">The principles that guide everything we do.</p>
+        <p class="eyebrow text-white/65">Editorial promise</p>
+        <h2 class="mt-2 text-3xl sm:text-4xl font-bold text-white">{siteConfig.motto}</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {[
-          {
-            title: "Integrity",
-            desc: "Honest assessments, fair pricing, and transparent communication every time.",
-            icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-          },
-          {
-            title: "Quality",
-            desc: "We never cut corners. Every job is done right, backed by our satisfaction guarantee.",
-            icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
-          },
-          {
-            title: "Reliability",
-            desc: "We show up on time, finish on schedule, and stand behind our work.",
-            icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-          },
-          {
-            title: "Community",
-            desc: "We're local, we're invested, and we care about the communities we serve.",
-            icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-          },
-        ].map((value) => (
-          <div class="text-center p-6 rounded-xl bg-surface shadow-sm border border-border">
-            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-              <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d={value.icon} />
-              </svg>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {editorialPillars.map((pillar) => (
+          <div class="rounded-2xl bg-white/[0.08] border border-white/15 p-7 sm:p-8 text-center shadow-panel">
+            <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25">
+              <Icon name={pillar.icon} class="h-7 w-7 text-white" />
             </div>
-            <h3 class="text-lg font-semibold text-text">{value.title}</h3>
-            <p class="mt-2 text-sm text-text-muted">{value.desc}</p>
+            <h3 class="text-xl font-bold text-white">{pillar.title}</h3>
+            <p class="mt-3 text-sm text-white/75 leading-relaxed">{pillar.description}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <CTABanner />
+  <section id="institution" class="py-16 sm:py-20 bg-surface-alt scroll-mt-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="order-2 lg:order-1">
+          <img
+            src="/images/hero-campus.jpg"
+            alt="PECIT campus and community"
+            class="rounded-2xl shadow-card w-full aspect-[16/10] object-cover ring-1 ring-border"
+            loading="lazy"
+          />
+        </div>
+        <div class="order-1 lg:order-2">
+          <p class="eyebrow text-primary">Our institution</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-text">{siteConfig.institution}</h2>
+          <p class="mt-4 text-text-muted leading-relaxed">
+            At PECIT, education transforms lives and uplifts communities. We foster a campus culture where curiosity is
+            encouraged, creativity is celebrated, and students are empowered to lead with purpose.
+          </p>
+          <p class="mt-4 text-text-muted leading-relaxed">
+            Programs connect theory with hands-on experience — preparing students for fast-changing industries across
+            Caraga and beyond.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            {programs.map((p) => (
+              <span class="rounded-full bg-primary/8 text-primary text-xs font-semibold px-3.5 py-1.5 ring-1 ring-primary/15">
+                {p}
+              </span>
+            ))}
+          </div>
+          <a
+            href="/articles/education-butuan-city-philippines-pecit/"
+            class="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
+          >
+            Read: PECIT in Butuan City
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <JoinGuildCTA />
 </BaseLayout>

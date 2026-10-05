@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { publications } from "../../data/publications";
+import { siteConfig } from "../../config/siteConfig";
+
+const magazines = [publications["magazine-2024"], publications["watchguild-magazine"]];
+---
+
+<BaseLayout
+  title={`Magazine Previews | ${siteConfig.businessName}`}
+  description="Read The Watch Guild magazine editions in an interactive flipbook viewer."
+  schema="Organization"
+>
+  <section class="py-12 sm:py-16 bg-surface">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold text-primary">Magazine Previews</h1>
+      <p class="mt-3 text-text-muted max-w-2xl">
+        Browse published magazine layouts from the official site — flip pages like a digital edition.
+      </p>
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2">
+        {magazines.map((pub) => (
+          <li class="rounded-2xl border border-border bg-surface-alt p-6 shadow-card card-lift hover:shadow-card-hover">
+            <h2 class="text-xl font-bold text-primary">{pub.title}</h2>
+            {pub.subtitle && <p class="mt-1 text-sm text-text-muted">{pub.subtitle}</p>}
+            <a
+              href={`/magazine/${pub.id}/`}
+              class="mt-5 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark transition-colors"
+            >
+              Open flipbook
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

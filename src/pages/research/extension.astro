@@ -1,0 +1,106 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import { siteConfig } from "../../config/siteConfig";
+
+const resources = [
+  {
+    title: "Kahayag Multidisciplinary Research Journal",
+    description: "Biannual research presentations from CBM, CTHM, and CTE graduating students.",
+    href: "/research/kahayag/",
+    icon: "journal",
+  },
+  {
+    title: "Book of Abstracts",
+    description: "Compiled abstracts from research presentations at PECIT.",
+    href: "/research/book-of-abstracts/",
+    icon: "clipboard",
+  },
+  {
+    title: "Student Research Articles",
+    description: "Featured studies on The Watch Guild Publication.",
+    href: "/research/studies/",
+    icon: "graduation-cap",
+  },
+  {
+    title: "Google Scholar",
+    description: "Discover scholarly profiles and citations (external).",
+    href: "https://scholar.google.com/",
+    icon: "book",
+    external: true,
+  },
+];
+---
+
+<BaseLayout
+  title={`Research & Extension | ${siteConfig.publicationName}`}
+  description="Research, Innovation & Extension Division (RIED) at PECIT — journals, partnerships, and community extension."
+  schema="Organization"
+>
+  <PageHero
+    eyebrow="RIED"
+    title="Research, Innovation & Extension"
+    description="The Research & Extension Department at PECIT supports student research, community partnerships, and biannual scholarly presentations."
+  />
+
+  <section class="py-16 sm:py-20 bg-surface">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div>
+          <p class="eyebrow text-accent">About RIED</p>
+          <h2 class="mt-2 text-2xl font-bold text-text">Research that serves the community</h2>
+          <p class="mt-4 text-text-muted leading-relaxed">
+            The Research, Innovation & Extension Division strengthens ties between PECIT and local communities through
+            research collaborations, extension programs, and events such as the biannual Kahayag research presentation.
+          </p>
+          <p class="mt-4 text-text-muted leading-relaxed">
+            Materials in the Kahayag journal are published by Philippine Electronics and Communication Institute of
+            Technology, Inc. (PECIT), Butuan City, Philippines.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-border bg-surface-alt p-6 sm:p-8 shadow-card">
+          <h3 class="text-lg font-bold text-text">Contact RIED</h3>
+          <ul class="mt-6 space-y-4 text-sm">
+            <li class="flex gap-3 text-text-muted">
+              <Icon name="map-pin" class="h-5 w-5 text-primary shrink-0" />
+              <span>Bonbon Road, Imadejas Subd., Butuan City</span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="mail" class="h-5 w-5 text-primary shrink-0" />
+              <a href="mailto:researchandextension78@gmail.com" class="text-text-muted hover:text-primary">
+                researchandextension78@gmail.com
+              </a>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="phone" class="h-5 w-5 text-primary shrink-0" />
+              <a href="tel:0852255543" class="text-text-muted hover:text-primary">(085) 225-5543 / 344-0456</a>
+            </li>
+          </ul>
+          <p class="mt-6 text-xs text-text-muted">
+            Director, Research, Innovation & Extension: Josephine U. Acha · josephineacha.ja@gmail.com
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {resources.map((item) => (
+          <a
+            href={item.href}
+            target={item.external ? "_blank" : undefined}
+            rel={item.external ? "noopener noreferrer" : undefined}
+            class="group flex gap-4 rounded-2xl border border-border bg-surface-alt p-6 shadow-card card-lift hover:border-primary/25"
+          >
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <Icon name={item.icon} class="h-6 w-6" />
+            </span>
+            <div>
+              <h3 class="font-bold text-text group-hover:text-primary transition-colors">{item.title}</h3>
+              <p class="mt-1 text-sm text-text-muted">{item.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

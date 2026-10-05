@@ -1,0 +1,40 @@
+---
+import { siteConfig } from "../config/siteConfig";
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = "Become Part of The Watch Guild Team",
+  subtitle = "Passionate about storytelling, photography, or campus journalism? Join the official student publication of PECIT.",
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-primary pattern-grid">
+  <div class="absolute inset-0 bg-logo-gradient opacity-25 pointer-events-none" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+    <div class="rounded-3xl border border-white/15 bg-white/[0.08] backdrop-blur-sm p-8 sm:p-12 shadow-panel flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
+      <div class="max-w-xl">
+        <p class="eyebrow text-white/65">Join us</p>
+        <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-white">{title}</h2>
+        <p class="mt-3 text-white/75 leading-relaxed">{subtitle}</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+        <a
+          href="/journalists/"
+          class="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-primary shadow-card hover:bg-white/90 transition-all"
+        >
+          Meet the Guild
+        </a>
+        <a
+          href="/contact/"
+          class="inline-flex items-center justify-center rounded-xl border-2 border-white/35 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10 transition-colors"
+        >
+          Contact {siteConfig.businessName}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import { getAllPosts, postToCard } from "../../lib/blog";
+import { siteConfig } from "../../config/siteConfig";
+
+const posts = await getAllPosts();
+const researchPosts = posts
+  .filter((p) => p.data.tags.some((t) => t.toLowerCase() === "research"))
+  .map(postToCard);
+---
+
+<BaseLayout
+  title={`Student Research | ${siteConfig.publicationName}`}
+  description="Graduating student research papers and studies published by The Watch Guild."
+  schema="Organization"
+>
+  <PageHero
+    eyebrow="Scholarly works"
+    title="Student Research"
+    description="Research articles and study summaries from PECIT students — as featured in The Watch Guild Publication."
+  />
+
+  <section class="py-14 sm:py-16 bg-surface">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {researchPosts.length === 0 ? (
+        <p class="text-text-muted">No research articles yet. Check back soon or browse all articles.</p>
+      ) : (
+        <div class="space-y-6">
+          {researchPosts.map((article) => (
+            <ArticleCard article={article} variant="horizontal" />
+          ))}
+        </div>
+      )}
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a href="/research/" class="text-sm font-semibold text-primary hover:text-primary-dark">
+          ← Research hub
+        </a>
+        <a href="/research/kahayag/" class="text-sm font-semibold text-primary hover:text-primary-dark">
+          Kahayag Journal flipbook →
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

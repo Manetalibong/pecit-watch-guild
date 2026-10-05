@@ -1,0 +1,39 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: "center" | "left";
+}
+
+const { eyebrow, title, description, align = "left" } = Astro.props;
+const centered = align === "center";
+---
+
+<section class="relative overflow-hidden bg-primary pattern-grid border-b border-white/10">
+  <div class="absolute inset-0 bg-logo-gradient opacity-30 pointer-events-none" aria-hidden="true"></div>
+  <div
+    class:list={[
+      "relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20",
+      centered && "text-center",
+    ]}
+  >
+    {eyebrow && <p class="eyebrow text-white/70">{eyebrow}</p>}
+    <h1 class="mt-2 text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-white tracking-tight leading-tight">
+      {title}
+    </h1>
+    {
+      description && (
+        <p
+          class:list={[
+            "mt-4 text-base sm:text-lg text-white/80 leading-relaxed max-w-3xl",
+            centered && "mx-auto",
+          ]}
+        >
+          {description}
+        </p>
+      )
+    }
+    <slot />
+  </div>
+</section>

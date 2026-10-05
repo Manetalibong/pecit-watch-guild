@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PublicationReader from "../../components/PublicationReader.astro";
+import { getPublication } from "../../data/publications";
+import { siteConfig } from "../../config/siteConfig";
+
+const pub = getPublication("book-of-abstracts")!;
+---
+
+<BaseLayout
+  title={`${pub.title} | ${siteConfig.businessName}`}
+  description={pub.subtitle ?? pub.title}
+  schema="Organization"
+>
+  <PublicationReader pub={pub} />
+</BaseLayout>

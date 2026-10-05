@@ -1,0 +1,141 @@
+---
+import { heroBanners } from "../data/heroBanners";
+
+const banners = heroBanners;
+/* Banners are 1024x266 strips — displayed at natural ratio so nothing is cropped */
+const BANNER_RATIO = "1024 / 266";
+---
+
+<section class="bg-surface border-b border-border" aria-label="Homepage banners">
+  <div class="relative mx-auto max-w-[1600px]">
+    <div class="relative overflow-hidden" style={`aspect-ratio: ${BANNER_RATIO}`}>
+      {banners.map((banner, i) => (
+        <a
+          href={banner.href ?? "#"}
+          class:list={[
+            "hero-slide absolute inset-0 block transition-opacity duration-700 ease-out",
+            i === 0 ? "opacity-100 z-10" : "opacity-0 z-0",
+          ]}
+          data-slide={i}
+          aria-label={banner.alt}
+          aria-hidden={i === 0 ? "false" : "true"}
+        >
+          <img
+            src={banner.image}
+            alt={banner.alt}
+            width="1024"
+            height="266"
+            class="h-full w-full object-contain"
+            loading={i === 0 ? "eager" : "lazy"}
+            fetchpriority={i === 0 ? "high" : "auto"}
+          />
+        </a>
+      ))}
+
+      {banners.length > 1 && (
+        <>
+          <div class="absolute inset-y-0 left-0 right-0 z-20 hidden sm:flex items-center justify-between px-3 lg:px-5 pointer-events-none">
+            <button
+              type="button"
+              id="hero-prev"
+              class="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-primary shadow-panel ring-1 ring-black/5 hover:bg-white hover:scale-105 active:scale-95 transition-all"
+              aria-label="Previous banner"
+            >
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              id="hero-next"
+              class="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-primary shadow-panel ring-1 ring-black/5 hover:bg-white hover:scale-105 active:scale-95 transition-all"
+              aria-label="Next banner"
+            >
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="absolute bottom-3 left-0 right-0 z-20 flex justify-center gap-2.5 pointer-events-auto"
+            role="tablist"
+            aria-label="Banner slides"
+          >
+            {banners.map((banner, i) => (
+              <button
+                type="button"
+                class:list={[
+                  "hero-dot h-2.5 rounded-full transition-all duration-300 shadow-sm",
+                  i === 0 ? "w-9 bg-white" : "w-2.5 bg-white/50 hover:bg-white/75",
+                ]}
+                data-dot={i}
+                aria-label={banner.alt}
+                aria-selected={i === 0 ? "true" : "false"}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll<HTMLElement>(".hero-slide");
+  const dots = document.querySelectorAll<HTMLButtonElement>(".hero-dot");
+  const prevBtn = document.getElementById("hero-prev");
+  const nextBtn = document.getElementById("hero-next");
+  let current = 0;
+  let timer: ReturnType<typeof setInterval>;
+
+  function goTo(index: number) {
+    if (!slides.length) return;
+    current = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, i) => {
+      const active = i === current;
+      slide.classList.toggle("opacity-100", active);
+      slide.classList.toggle("z-10", active);
+      slide.classList.toggle("opacity-0", !active);
+      slide.classList.toggle("z-0", !active);
+      slide.setAttribute("aria-hidden", String(!active));
+    });
+
+    dots.forEach((dot, i) => {
+      const active = i === current;
+      dot.classList.toggle("w-9", active);
+      dot.classList.toggle("bg-white", active);
+      dot.classList.toggle("w-2.5", !active);
+      dot.classList.toggle("bg-white/35", !active);
+      dot.setAttribute("aria-selected", String(active));
+    });
+  }
+
+  function startAutoplay() {
+    timer = setInterval(() => goTo(current + 1), 6500);
+  }
+
+  function resetAutoplay() {
+    clearInterval(timer);
+    startAutoplay();
+  }
+
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      goTo(Number(dot.dataset.dot));
+      resetAutoplay();
+    });
+  });
+
+  prevBtn?.addEventListener("click", () => {
+    goTo(current - 1);
+    resetAutoplay();
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    goTo(current + 1);
+    resetAutoplay();
+  });
+
+  if (slides.length > 1) startAutoplay();
+</script>

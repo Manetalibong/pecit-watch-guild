@@ -1,0 +1,23 @@
+---
+import PdfFlipbookViewer from "./PdfFlipbookViewer.astro";
+import type { Publication } from "../data/publications";
+import { publicationPdfUrl } from "../data/publications";
+
+interface Props {
+  pub: Publication;
+  backHref?: string;
+  backLabel?: string;
+}
+
+const { pub, backHref = "/", backLabel = "Back to home" } = Astro.props;
+const pdfSrc = publicationPdfUrl(pub);
+---
+
+<PdfFlipbookViewer
+  pdfSrc={pdfSrc}
+  remoteUrl={pub.remoteUrl}
+  title={pub.title}
+  subtitle={pub.subtitle}
+  backHref={backHref}
+  backLabel={backLabel}
+/>

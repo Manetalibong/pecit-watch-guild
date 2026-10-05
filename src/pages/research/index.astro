@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import { publications } from "../../data/publications";
+import { mainNav } from "../../config/navigation";
+import { siteConfig } from "../../config/siteConfig";
+
+const researchMenu = mainNav.find((item) => item.label === "Research")?.children ?? [];
+const pubCards = [
+  publications.kahayag,
+  publications["book-of-abstracts"],
+  publications["magazine-2024"],
+  publications["watchguild-magazine"],
+];
+
+const pubLinks: Record<string, string> = {
+  kahayag: "/research/kahayag/",
+  "book-of-abstracts": "/research/book-of-abstracts/",
+  "magazine-2024": "/magazine/magazine-2024/",
+  "watchguild-magazine": "/magazine/watchguild-magazine/",
+};
+---
+
+<BaseLayout
+  title={`Research & Scholarly Works | ${siteConfig.publicationName}`}
+  description="Kahayag Journal, Book of Abstracts, student research, and Research & Extension at PECIT."
+  schema="Organization"
+>
+  <PageHero
+    eyebrow="Research"
+    title="Scholarly Works"
+    description="Journals, abstracts, and graduating student research from PECIT Research, Innovation & Extension (RIED)."
+  />
+
+  <section class="py-14 sm:py-16 bg-surface border-b border-border">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {researchMenu.map((item, i) => (
+          <a
+            href={item.href}
+            class="group card-lift rounded-2xl border border-border bg-surface-alt p-6 shadow-card hover:border-primary/30 hover:shadow-card-hover"
+          >
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8 ring-1 ring-primary/15 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <Icon
+                name={["book", "journal", "clipboard", "graduation-cap", "users"][i] ?? "book"}
+                class="h-5 w-5"
+              />
+            </span>
+            <h2 class="mt-4 text-lg font-bold text-text group-hover:text-primary transition-colors">{item.label}</h2>
+            {item.description && (
+              <p class="mt-2 text-sm text-text-muted leading-relaxed">{item.description}</p>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 bg-surface-alt">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+        <div>
+          <p class="eyebrow text-accent">Publications</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-text">Read in our flipbook viewer</h2>
+        </div>
+        <a href="/magazine/" class="text-sm font-semibold text-primary hover:text-primary-dark">
+          Magazine previews →
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {pubCards.map((pub) => (
+          <article class="rounded-2xl border border-border bg-surface overflow-hidden shadow-card card-lift flex flex-col sm:flex-row">
+            {pub.coverImage ? (
+              <img
+                src={pub.coverImage}
+                alt=""
+                class="sm:w-36 h-44 sm:h-auto object-cover shrink-0"
+                loading="lazy"
+              />
+            ) : (
+              <div class="sm:w-36 h-44 sm:min-h-[180px] bg-primary/10 flex items-center justify-center shrink-0">
+                <Icon name="journal" class="h-10 w-10 text-primary/40" />
+              </div>
+            )}
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="text-lg font-bold text-primary">{pub.title}</h3>
+              {pub.subtitle && <p class="mt-1 text-sm text-text-muted">{pub.subtitle}</p>}
+              {pub.description && (
+                <p class="mt-3 text-sm text-text-muted line-clamp-3 flex-1">{pub.description}</p>
+              )}
+              <a
+                href={pubLinks[pub.id] ?? "#"}
+                class="mt-5 inline-flex w-fit rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark transition-colors"
+              >
+                Open flipbook
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-14 bg-primary text-white pattern-grid relative overflow-hidden">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="eyebrow text-white/65">Research & Extension</p>
+      <h2 class="mt-2 text-2xl font-bold">RIED at PECIT</h2>
+      <p class="mt-3 text-white/75 max-w-2xl mx-auto text-sm leading-relaxed">
+        Bonbon Road, Imadejas Subd., Butuan City · researchandextension78@gmail.com · (085) 225-5543
+      </p>
+      <a
+        href="/research/extension/"
+        class="mt-6 inline-flex rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-primary hover:bg-white/90 transition-colors"
+      >
+        Research &amp; Extension hub
+      </a>
+    </div>
+  </section>
+</BaseLayout>

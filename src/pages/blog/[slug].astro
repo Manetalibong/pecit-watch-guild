@@ -1,98 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import CTABanner from "../../components/CTABanner.astro";
-import { siteConfig } from "../../config/siteConfig";
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
-const { title, description, metaTitle, metaDescription, image, author, date, tags } = post.data;
-
-const formattedDate = date.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const { slug } = Astro.params;
+return Astro.redirect(`/articles/${slug}/`);
 ---
-
-<BaseLayout
-  title={metaTitle || `${title} | ${siteConfig.businessName} Blog`}
-  description={metaDescription || description}
-  image={image}
-  type="article"
-  schema="Article"
-  articleTitle={title}
-  articleDate={date.toISOString()}
-  articleAuthor={author}
->
-  <section class="bg-primary py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <nav class="mb-4 text-sm text-white/60">
-        <a href="/" class="hover:text-white transition-colors">Home</a>
-        <span class="mx-2">/</span>
-        <a href="/blog/" class="hover:text-white transition-colors">Blog</a>
-        <span class="mx-2">/</span>
-        <span class="text-white">{title}</span>
-      </nav>
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white max-w-4xl">{title}</h1>
-      <div class="mt-4 flex items-center gap-4 text-white/70">
-        <span>{author}</span>
-        <span class="text-white/40">|</span>
-        <time datetime={date.toISOString().split("T")[0]}>{formattedDate}</time>
-      </div>
-    </div>
-  </section>
-
-  <article class="py-16 sm:py-20 bg-surface">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      {image && (
-        <img
-          src={image}
-          alt={title}
-          class="w-full rounded-xl mb-10 aspect-video object-cover"
-          loading="eager"
-          fetchpriority="high"
-        />
-      )}
-
-      <div class="prose prose-lg max-w-none prose-headings:text-text prose-p:text-text-muted prose-li:text-text-muted prose-a:text-primary prose-strong:text-text">
-        <Content />
-      </div>
-
-      {tags.length > 0 && (
-        <div class="mt-10 pt-6 border-t border-border">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-sm font-medium text-text-muted">Tags:</span>
-            {tags.map((tag) => (
-              <span class="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div class="mt-8">
-        <a
-          href="/blog/"
-          class="inline-flex items-center text-sm font-medium text-primary hover:text-primary-dark transition-colors"
-        >
-          <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to all posts
-        </a>
-      </div>
-    </div>
-  </article>
-
-  <CTABanner />
-</BaseLayout>

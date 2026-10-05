@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import { siteConfig } from "../../config/siteConfig";
+
+const scribdUrl =
+  "https://www.scribd.com/document/877259258/Pecit-Student-Handbook-2024-2-1";
+const embedUrl = "https://www.scribd.com/embeds/877259258/content";
+---
+
+<BaseLayout
+  title={`Student Handbook | ${siteConfig.publicationName}`}
+  description="PECIT Student Handbook — academic policies, campus rules, and student responsibilities."
+  schema="Organization"
+>
+  <PageHero eyebrow="Resources" title="Student Handbook">
+    <p class="mt-4 text-base sm:text-lg text-white/80 leading-relaxed max-w-3xl">
+      Your essential guide to academic policies, campus rules, and student responsibilities at PECIT. Stay informed and
+      make the most of your journey at {siteConfig.institutionShort}.
+    </p>
+    <a
+      href={scribdUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-6 inline-flex rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-primary shadow-card hover:bg-white/90 transition-all"
+    >
+      Open full handbook on Scribd
+    </a>
+  </PageHero>
+
+  <section class="bg-[#1a1a22] py-6 sm:py-8 min-h-[70vh]">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6">
+      <iframe
+        title="PECIT Student Handbook"
+        src={embedUrl}
+        class="w-full min-h-[75vh] rounded-xl border border-white/10 bg-white shadow-panel"
+        allow="fullscreen"
+      ></iframe>
+    </div>
+  </section>
+</BaseLayout>
